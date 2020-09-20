@@ -1,3 +1,4 @@
+import time
 # Using PagerDuty client library
 from pdpyras import EventsAPISession
 
@@ -5,5 +6,16 @@ from pdpyras import EventsAPISession
 integration_key = input('Integration key? ')
 session = EventsAPISession(integration_key)
 
-dedup_key = session.trigger('AQI too high', 'local python script')
-# Let the user resolve the session
+def trigger_event(session, aqi):
+	dedup_key = session.trigger('AQI ' + str(aqi) + ' TOO HIGH', 'local python script')
+	# Let the user resolve the session
+	return dedup_key
+
+def get_aqi():
+	pass
+
+
+while True:
+	print(time.ctime())
+	# time.sleep(60) # Sleep about 60 seconds
+	time.sleep(1)
