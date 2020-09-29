@@ -19,15 +19,28 @@ sensor_list = [64729, 35809, 65895, 37621]
 def get_aqi(sensor_ids):
 	pm25s = []
 	for s in sensor_ids:
-		sd = Sensor(s).parent.as_dict()
-		# print(sd['statistics']['10min_avg'], '\n')
-		pm25s.append(sd['statistics']['10min_avg'])
+		try:
+			sd = Sensor(s).parent.as_dict()
+			# print(sd['statistics']['10min_avg'], '\n')
+			pm25s.append(sd['statistics']['10min_avg'])
+		except ValueError as err:
+			print("Error:", err)
 
-	# Take the middle two values, average, for the PM2.5 near me
+
 	pm25s.sort() # Four values this is quick
-	my_pm25 = (pm25s[1] + pm25s[2]) / 2
+	if len(pm25s) > 2:
+		# Omit the first and last two values, average, for the PM2.5 near me
+		pm25s = pm25s[1:-1]
+		my_pm25 = sum(pm25s) / len(pm25s)
+	elif len(pm25s) == 1:
+		# just take the value
+		my_pm25 = pm25s[0]
+	else:
+		# kinda panic, alert on bad sensor data
+		return 503 # like http.cat/503
 
 	my_aqi = aqiFromPM(my_pm25)
+
 	# print("My AQI:", my_aqi)
 	return my_aqi
 
