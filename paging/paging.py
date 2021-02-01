@@ -4,9 +4,6 @@ from pdpyras import EventsAPISession
 # Use this helpful Purple Air API client
 from purpleair.sensor import Sensor
 
-# AQI Notifier integration key
-
-
 def trigger_event(session, aqi):
 	dedup_key = session.trigger('AQI ' + str(aqi) + ' TOO HIGH', 'local python script')
 	# Let the user resolve the session
