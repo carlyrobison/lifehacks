@@ -48,7 +48,7 @@ class State:
 					# print('Can move!')
 					moves.append((f, t))
 		return moves
-	
+
 	def can_move(self, vial_from, vial_to):
 		receiving_vial = self.topmost_color(vial_to)
 		sending_vial = self.topmost_color(vial_from)
@@ -67,6 +67,21 @@ class State:
 				return b
 		return ' '
 
+	# Returns a copy of the State
+	def duplicate_state(self):
+		return State(self.vials)
+
+	# Moves come in a tuple of (from_vial, to_vial)
+	def make_move(self, move):
+		vial_from = move[0]
+		vial_to = move[1]
+		color = self.topmost_color(vial_from)
+		self.vials[vial_to][0] != ' '
+		# move the top color to the other vial
+		# while the other vial is not overflowing
+		# while ()
+		# while sending_vial == receiving_vial or receiving_vial == ' ':
+
 class Puzzle:
 	def __init__(self, level_num, start_state):
 		self.start = State([c for c in start_state.split('\n')])
@@ -76,11 +91,21 @@ class Puzzle:
 	def __repr__(self):
 		return "Level {} with start state \n{}\n".format(self.level, self.start)
 
-p = Puzzle(0, 'ab\nca\n c\n  ')
-print(p)
-print(p.start.is_solved())
-print(p.start.allowed_moves())
+	# def solve_puzzle(self):
+	# 	# breadth first search, so we don't get stuck in a cycle
+	# 	moves = 0
+	# 	frontier = []
+	# 	for m in self.start.allowed_moves:
+
+
+# Presolved puzzle
 p = Puzzle(0, 'aa\nbb\n  \n  ')
 print(p)
-print(p.start.is_solved())
+assert(p.start.is_solved())
+print(p.start.allowed_moves())
+
+# Harder puzzle
+p = Puzzle(0, 'ab\nca\n c\n b')
+print(p)
+assert(not p.start.is_solved())
 print(p.start.allowed_moves())
