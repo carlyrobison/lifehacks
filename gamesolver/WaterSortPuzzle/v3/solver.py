@@ -3,12 +3,14 @@ from game_state_model import GameState
 
 class SolveGame:
     def __init__(self, game: GameState):
-        self.initial_game_ = copy.deepcopy(game)
+        self.game_ = copy.deepcopy(game)
     
     def __repr__(self):
-        return "Initial game:\n{}\n".format(self.initial_game_.__repr__())
+        return "game:\n{}\n".format(self.game_.__repr__())
 
-
+    # def solve(self):
+    #     while not self.game_.isSolved():
+    #         # Make a move
 
 
 

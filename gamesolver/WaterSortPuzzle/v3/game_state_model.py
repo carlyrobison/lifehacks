@@ -4,8 +4,6 @@ VIAL_SIZE = 4
 EMPTY_VIALS = 2
 
 class Vial:
-    colors_: List[str] = []
-
     def __init__(self, init_string: str):
         if len(init_string) != 4: raise ValueError("Game State Init String must be length {0}".format(VIAL_SIZE))
         self.colors_ = [char for char in init_string]
@@ -47,13 +45,11 @@ class Vial:
             i -= 1
         return (layerSize, topLayerChar)
 
-
 class GameState:
-    vials_: List[Vial] = []
-
     # Provide vial config with a string of letters
     def __init__(self, init_string: str):
         if (len(init_string) %4 != 0): raise ValueError("Game State Init String must be divisible by {0}".format(VIAL_SIZE))
+        self.vials_ = []
         for i in range(0, int(len(init_string) / 4)):
             vial_string = init_string[i * 4: (i +1) * 4]
             self.vials_.append(Vial(vial_string))
@@ -68,3 +64,23 @@ class GameState:
             if not vial.isSolved():
                 return False
         return True
+
+    def canMoveInto(self, layer: Tuple[int, str], gap: Tuple[int, str]) -> bool:
+        if gap[0] == 0: return False  # Gap has to be > 0
+        if layer[0] == 0: return False  # Must have something to fill with
+        if gap[1] == '*':
+            return True  # Anything can fill this
+        return gap[1] == layer[1]  # Only returns true if they are compatible colors
+
+    # Use vial indices as input. Move A into B
+    def isValidMove(self, move: Tuple[int, int]) -> bool:
+        if move[0] >= len(self.vials_): raise IndexError("Vial does not exist at index {}".format(move[0]))
+        if move[1] >= len(self.vials_): raise IndexError("Vial does not exist at index {}".format(move[1]))
+        fromVialLayer = self.vials_[move[0]].topLayer()
+        toVialFillWith = self.vials_[move[1]].canFillWith()
+        return self.canMoveInto(fromVialLayer, toVialFillWith)
+
+    # # Calculates a
+    # def validMoves(self) -> Tuple[int, int]:
+
+    # # def 
