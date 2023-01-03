@@ -78,5 +78,55 @@ class TestVialTopLayer(unittest.TestCase):
         v = Vial('a   ')
         self.assertEqual(v.topLayer(), (1, 'a'))
 
+class TestVialAddColor(unittest.TestCase):
+    def test_emptyvial(self):
+        v = Vial('    ')
+        v.addColor('c')
+        self.assertEqual(v.__repr__(), 'c   ')
+    
+    def test_finishedvial(self):
+        v = Vial('aaaa')
+        with self.assertRaises(ValueError):
+            v.addColor('a')
+    
+    def test_wrongcolor(self):
+        v = Vial('aaa ')
+        with self.assertRaises(ValueError):
+            v.addColor('b')
+    
+    def test_partialvial(self):
+        v = Vial('aba ')
+        v.addColor('a')
+        self.assertEqual(v.__repr__(), 'abaa')
+
+        v = Vial('a   ')
+        v.addColor('a')
+        self.assertEqual(v.__repr__(), 'aa  ')
+
+class TestVialRemoveColor(unittest.TestCase):
+    def test_emptyvial(self):
+        v = Vial('    ')
+        with self.assertRaises(ValueError):
+            v.removeColor()
+    
+    def test_finishedvial(self):
+        v = Vial('aaaa')
+        v.removeColor()
+        self.assertEqual(v.__repr__(), 'aaa ')
+    
+    def test_scrambledvial(self):
+        v = Vial('abac')
+        v.removeColor()
+        self.assertEqual(v.__repr__(), 'aba ')
+    
+    def test_partialvial(self):
+        v = Vial('acc ')
+        v.removeColor()
+        self.assertEqual(v.__repr__(), 'ac  ')
+
+        v = Vial('a   ')
+        v.removeColor()
+        self.assertEqual(v.__repr__(), '    ')
+
 if __name__ == '__main__':
     unittest.main()

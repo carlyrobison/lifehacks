@@ -44,6 +44,20 @@ class Vial:
                 layerSize = 1
             i -= 1
         return (layerSize, topLayerChar)
+    
+    def addColor(self, color: str) -> None:
+        # use canFillWith to determine location to add color
+        fillableSpace = self.canFillWith()
+        if (fillableSpace[1] != '*') and (fillableSpace[1] != color): raise ValueError("Invalid color {0} for vial {1}".format(color, self))
+        if fillableSpace[0] == 0: raise ValueError("Vial {0} does not have any space".format(self))
+        if len(color) != 1: raise ValueError("Invalid color {}".format(color))
+        self.colors_[VIAL_SIZE-fillableSpace[0]] = color
+    
+    def removeColor(self) -> None:
+        fillableSpace = self.canFillWith()
+        if fillableSpace[0] == VIAL_SIZE: raise ValueError("Vial {0} is already empty".format(self))
+        self.colors_[VIAL_SIZE-fillableSpace[0] - 1] = ' '
+        
 
 class GameState:
     # Provide vial config with a string of letters
@@ -65,7 +79,7 @@ class GameState:
                 return False
         return True
 
-    def canMoveInto(self, layer: Tuple[int, str], gap: Tuple[int, str]) -> bool:
+    def canMoveInto_(self, layer: Tuple[int, str], gap: Tuple[int, str]) -> bool:
         if gap[0] == 0: return False  # Gap has to be > 0
         if layer[0] == 0: return False  # Must have something to fill with
         if gap[1] == '*':
@@ -78,9 +92,14 @@ class GameState:
         if move[1] >= len(self.vials_): raise IndexError("Vial does not exist at index {}".format(move[1]))
         fromVialLayer = self.vials_[move[0]].topLayer()
         toVialFillWith = self.vials_[move[1]].canFillWith()
-        return self.canMoveInto(fromVialLayer, toVialFillWith)
+        return self.canMoveInto_(fromVialLayer, toVialFillWith)
 
-    # # Calculates a
-    # def validMoves(self) -> Tuple[int, int]:
-
-    # # def 
+    # Makes the given move.
+    def makeMove(self, move: Tuple[int, int]) -> None:
+        if not self.isValidMove(move): raise ValueError("Invalid move")
+        fromVial = self.vials_[move[0]]
+        toVial = self.vials_[move[1]]
+        fromVialLayer = self.vials_[move[0]].topLayer()
+        while self.isValidMove(move):  # Fill as much of the vial as possible
+            fromVial.removeColor()
+            toVial.addColor(fromVialLayer(move[1]))
