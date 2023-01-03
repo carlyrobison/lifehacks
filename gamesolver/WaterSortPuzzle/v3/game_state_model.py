@@ -58,7 +58,6 @@ class Vial:
         if fillableSpace[0] == VIAL_SIZE: raise ValueError("Vial {0} is already empty".format(self))
         self.colors_[VIAL_SIZE-fillableSpace[0] - 1] = ' '
         
-
 class GameState:
     # Provide vial config with a string of letters
     def __init__(self, init_string: str):
@@ -106,4 +105,4 @@ class GameState:
             toVial.addColor(fromVialLayer[1])
 
     def __eq__(self, other):
-        return self.__repr__() == other.__repr__()
+        return set([vial.__repr__() for vial in self.vials_]) == set([vial.__repr__() for vial in other.vials_])
