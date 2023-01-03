@@ -1,34 +1,43 @@
 import copy
 from itertools import product
+from typing import List
 from game_state_model import GameState
 
-class SolveGame:
-    def __init__(self, game: GameState):
-        self.game_ = copy.deepcopy(game)
-        self.explored_gamestates = {hash(self.game_)}
-    
-    def __repr__(self):
-        return "game:\n{0}\nexplored gamestates:{1}".format(self.game_.__repr__(), self.explored_gamestates)
+MAX_MOVES = 50
 
-    def solve(self):
-        numVials = len(self.game_.vials_)
-        while not self.game_.isSolved():
-            print('----------------')
-            print(self.game_)
-            # Find the first valid move
-            validMoveMade = False
-            for i, j in product(range(numVials), range(numVials)):
-                if self.game_.isValidMove((i, j)):
-                    print("Moving vial {0} into vial {1}".format(i, j))
-                    self.game_.makeMove((i, j))
-                    validMoveMade = True
-                    break
-            if not validMoveMade:
-                print('No valid moves, but game not solved :(')
-                break
+# TODO optimize with hashing
+def solve(game: GameState, explored_gamestates : List[GameState] = []) -> bool:
+    # Base case 1: Solved!
+    if game.isSolved():
+        print('Solved! Printing in reverse order....')
+        print('------------')
+        print(game)
+        return True
+    
+    # Base case 2: Loops :(
+    if game in explored_gamestates:
+        print('Found a loop')
+        return False  # Unsolvable
+    
+    explored_gamestates.append(game)
+
+    numVials = len(game.vials_)
+    for i, j in product(range(numVials), range(numVials)):
+        if game.isValidMove((i, j)):
+            print("{2}Moving vial {0} into vial {1}".format(i, j, len(explored_gamestates)* '\t'))
+            newgame = copy.deepcopy(game)
+            newgame.makeMove((i, j))
+            if solve(newgame, explored_gamestates):  # This returning True means there is a valid solve path.
+                print('------------')
+                print(game)
+                return True
+    
+    explored_gamestates.pop()
+    # Base case 3: No valid moves, or all moves end in failure
+    print('No winning moves :(')
+    return False
 
 init_string: str = 'aabbbbaa'
 g = GameState(init_string)
 print(g)
-s = SolveGame(g)
-s.solve()
+solve(g)

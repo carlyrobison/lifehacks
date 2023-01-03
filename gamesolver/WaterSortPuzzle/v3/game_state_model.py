@@ -105,5 +105,5 @@ class GameState:
             fromVial.removeColor()
             toVial.addColor(fromVialLayer[1])
 
-    def __hash__(self):
-        return hash(self.__repr__())
+    def __eq__(self, other):
+        return self.__repr__() == other.__repr__()
