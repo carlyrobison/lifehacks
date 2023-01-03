@@ -90,6 +90,7 @@ class GameState:
     def isValidMove(self, move: Tuple[int, int]) -> bool:
         if move[0] >= len(self.vials_): raise IndexError("Vial does not exist at index {}".format(move[0]))
         if move[1] >= len(self.vials_): raise IndexError("Vial does not exist at index {}".format(move[1]))
+        if move[0] == move[1]: return False  # cannot move vial into itself
         fromVialLayer = self.vials_[move[0]].topLayer()
         toVialFillWith = self.vials_[move[1]].canFillWith()
         return self.canMoveInto_(fromVialLayer, toVialFillWith)
@@ -102,4 +103,7 @@ class GameState:
         fromVialLayer = self.vials_[move[0]].topLayer()
         while self.isValidMove(move):  # Fill as much of the vial as possible
             fromVial.removeColor()
-            toVial.addColor(fromVialLayer(move[1]))
+            toVial.addColor(fromVialLayer[1])
+
+    def __hash__(self):
+        return hash(self.__repr__())

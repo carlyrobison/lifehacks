@@ -35,6 +35,7 @@ class TestMoveValidity(unittest.TestCase):
         f = GameState('aba ba  abaab   ')
         self.assertTrue(f.isValidMove((0, 1)))
         self.assertTrue(f.isValidMove((1, 0)))
+        self.assertFalse(f.isValidMove((1, 1)))
         self.assertFalse(f.isValidMove((0, 2)))
         self.assertTrue(f.isValidMove((2, 0)))
         self.assertFalse(f.isValidMove((0, 3)))
@@ -48,6 +49,19 @@ class TestMoveValidity(unittest.TestCase):
         d = GameState('aaaa')
         with self.assertRaises(IndexError):
             d.isValidMove((3, 0))
+
+class TestMoveVials(unittest.TestCase):
+    def test_samplegame(self):
+        g = GameState('aaaa')
+        g.makeMove((0, 1))
+        self.assertEqual(g.vials_[0].__repr__(), '    ')
+        self.assertEqual(g.vials_[1].__repr__(), 'aaaa')    
+
+    def test_partialvials(self):
+        g = GameState('baa baa ')
+        g.makeMove((0, 1))
+        self.assertEqual(g.vials_[0].__repr__(), 'ba  ')
+        self.assertEqual(g.vials_[1].__repr__(), 'baaa')    
 
 if __name__ == '__main__':
     unittest.main()
