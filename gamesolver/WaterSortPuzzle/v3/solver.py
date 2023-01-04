@@ -12,7 +12,7 @@ def solve(game: GameState, explored_gamestates : List[GameState] = []) -> bool:
         print('Solved! Printing in reverse order....')
         print('------------')
         print("Metric: {}".format(game.metricValue()))
-        print(game)
+        # print(game)
         return True
     
     # Base case 2: Loops :(
@@ -27,11 +27,11 @@ def solve(game: GameState, explored_gamestates : List[GameState] = []) -> bool:
         if game.isValidMove((i, j)):      
             newgame = copy.deepcopy(game)
             newgame.makeMove((i, j))
-            if solve(newgame, explored_gamestates):  # This returning True means there is a valid solve path.
+            if newgame.metricValue() > game.metricValue() and solve(newgame, explored_gamestates):  # This returning True means there is a valid solve path.
                 print('------------')
                 print("{2} Moved vial {0} into vial {1}".format(i, j, len(explored_gamestates)* '\t'))
                 print("Metric: {}".format(game.metricValue()))
-                print(game)
+                # print(game)
                 return True
     
     explored_gamestates.pop()
@@ -39,12 +39,13 @@ def solve(game: GameState, explored_gamestates : List[GameState] = []) -> bool:
     # print('No winning moves :(')
     return False
 
+# Simple, but not trivial
 init_string: str = 'aabbbbaa'
 g = GameState(init_string)
 print(g)
 assert(solve(g))
 
-# TODO: Fix move selection so it doesn't move the green back and forth
+# Typical game
 init_string: str = 'otbwlagpwtlvvaaykgrltproboprlwgvbvybwogakykprkyt'
 g = GameState(init_string)
 print(g)
