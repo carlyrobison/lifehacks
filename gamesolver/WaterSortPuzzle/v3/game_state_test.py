@@ -128,5 +128,45 @@ class TestVialRemoveColor(unittest.TestCase):
         v.removeColor()
         self.assertEqual(v.__repr__(), '    ')
 
+class TestVialMetric(unittest.TestCase):
+    def test_emptyvial(self):
+        v = Vial('    ')
+        self.assertEqual(v.metricValue(), 0)
+    
+    def test_finishedvial(self):
+        v = Vial('aaaa')
+        self.assertEqual(v.metricValue(), 3)
+    
+    def test_scrambledvial(self):
+        v = Vial('abac')
+        self.assertEqual(v.metricValue(), -3)
+    
+    def test_partialvial(self):
+        v = Vial('acc ')
+        self.assertEqual(v.metricValue(), 0)
+
+        v = Vial('a   ')
+        self.assertEqual(v.metricValue(), 0)
+
+class TestVialEmpty(unittest.TestCase):
+    def test_emptyvial(self):
+        v = Vial('    ')
+        self.assertTrue(v.isEmpty())
+    
+    def test_finishedvial(self):
+        v = Vial('aaaa')
+        self.assertFalse(v.isEmpty())
+    
+    def test_scrambledvial(self):
+        v = Vial('abac')
+        self.assertFalse(v.isEmpty())
+    
+    def test_partialvial(self):
+        v = Vial('acc ')
+        self.assertFalse(v.isEmpty())
+
+        v = Vial('a   ')
+        self.assertFalse(v.isEmpty())
+
 if __name__ == '__main__':
     unittest.main()

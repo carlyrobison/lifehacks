@@ -11,6 +11,7 @@ def solve(game: GameState, explored_gamestates : List[GameState] = []) -> bool:
     if game.isSolved():
         print('Solved! Printing in reverse order....')
         print('------------')
+        print("Metric: {}".format(game.metricValue()))
         print(game)
         return True
     
@@ -29,6 +30,7 @@ def solve(game: GameState, explored_gamestates : List[GameState] = []) -> bool:
             if solve(newgame, explored_gamestates):  # This returning True means there is a valid solve path.
                 print('------------')
                 print("{2} Moved vial {0} into vial {1}".format(i, j, len(explored_gamestates)* '\t'))
+                print("Metric: {}".format(game.metricValue()))
                 print(game)
                 return True
     

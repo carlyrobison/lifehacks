@@ -57,6 +57,27 @@ class Vial:
         fillableSpace = self.canFillWith()
         if fillableSpace[0] == VIAL_SIZE: raise ValueError("Vial {0} is already empty".format(self))
         self.colors_[VIAL_SIZE-fillableSpace[0] - 1] = ' '
+
+    # Hypothesis: metric always decreases as we make progress towards the solution
+    # Metric is "How many colors are 'trapped' by the wrong color?"
+    # This metric isn't quite monotonic?
+    def metricValue(self) -> int:
+        metric: int = 0
+        current_color: str = self.colors_[0]
+        for i in range(1, VIAL_SIZE):
+            if (self.colors_[i] != ' '):
+                if (self.colors_[i] != current_color):
+                    metric -= 1
+                else:
+                    metric += 1
+            current_color = self.colors_[i]
+        return metric
+    
+    def isEmpty(self) -> bool:
+        for i in range(VIAL_SIZE):
+            if self.colors_[i] != ' ':
+                return False
+        return True
         
 class GameState:
     # Provide vial config with a string of letters
@@ -103,6 +124,10 @@ class GameState:
         while self.isValidMove(move):  # Fill as much of the vial as possible
             fromVial.removeColor()
             toVial.addColor(fromVialLayer[1])
+
+    def metricValue(self) -> int:
+        metric: int = sum([vial.metricValue() for vial in self.vials_])
+        return metric
 
     def __eq__(self, other):
         return set([vial.__repr__() for vial in self.vials_]) == set([vial.__repr__() for vial in other.vials_])
