@@ -5,7 +5,7 @@ EMPTY_VIALS = 2
 
 class Vial:
     def __init__(self, init_string: str):
-        if len(init_string) != 4: raise ValueError("Game State Init String must be length {0}".format(VIAL_SIZE))
+        if len(init_string) != VIAL_SIZE: raise ValueError("Game State Init String must be length {0}".format(VIAL_SIZE))
         self.colors_ = [char for char in init_string]
 
     def __repr__(self) -> str:
@@ -82,13 +82,23 @@ class Vial:
 class GameState:
     # Provide vial config with a string of letters
     def __init__(self, init_string: str):
-        if (len(init_string) %4 != 0): raise ValueError("Game State Init String must be divisible by {0}".format(VIAL_SIZE))
         self.vials_ = []
-        for i in range(0, int(len(init_string) / 4)):
-            vial_string = init_string[i * 4: (i +1) * 4]
+        for vial_string in init_string.split(' '):
             self.vials_.append(Vial(vial_string))
         for i in range(0, EMPTY_VIALS):
             self.vials_.append(Vial('    '))
+
+        # Finally, check that this is solvable, i.e. that each color present has VIAL_SIZE blocks.
+        color_map = {}
+        for vial in self.vials_:
+            for color in vial.colors_:
+                if color in color_map:  # TODO: probably a nice way to do this with enumerable
+                    color_map[color] += 1
+                else:
+                    color_map[color] = 1
+        for color, qty in color_map.items():
+            if color != ' ' and qty != VIAL_SIZE:
+                raise ValueError('Invalid number {1} of color blocks {0}, needs to be {2}'.format(color, qty, VIAL_SIZE))
 
     def __repr__(self) -> str:
         return '\n'.join([vial.__repr__() for vial in self.vials_])

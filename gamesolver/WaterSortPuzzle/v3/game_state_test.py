@@ -5,15 +5,20 @@ from game_state_model import GameState
 
 class TestGameCreation(unittest.TestCase):
     def test_finishedgame(self):
-        g = GameState('aaaabbbb')
+        g = GameState('aaaa bbbb')
         self.assertTrue(g.isSolved())
     
     def test_finishedvial(self):
-        g = GameState('abaabaab')
+        g = GameState('abaa babb')
         self.assertFalse(g.isSolved())
         
     def test_invalidinitstring(self):
-        s = 'aa'
+        s = 'aa bbbb'
+        with self.assertRaises(ValueError):
+            GameState(s)
+    
+    def test_invalidinitstring(self):
+        s = 'aaab bbbb'
         with self.assertRaises(ValueError):
             GameState(s)
 

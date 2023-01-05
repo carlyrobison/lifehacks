@@ -40,13 +40,19 @@ def solve(game: GameState, explored_gamestates : List[GameState] = []) -> bool:
     return False
 
 # Simple, but not trivial
-init_string: str = 'aabbbbaa'
+init_string: str = 'aabb bbaa'
 g = GameState(init_string)
 print(g)
 assert(solve(g))
 
 # Typical game
-init_string: str = 'otbwlagpwtlvvaaykgrltproboprlwgvbvybwogakykprkyt'
+init_string: str = 'otbw lagp wtlv vaay kgrl tpro bopr lwgv bvyb woga kykp rkyt'
+g = GameState(init_string)
+print(g)
+assert(solve(g))
+
+# Another game
+init_string: str = 'yoro wyaa pbyl lgkw wkak vrgv tvgl pblo gbtk rpbt wovp trya'
 g = GameState(init_string)
 print(g)
 assert(solve(g))

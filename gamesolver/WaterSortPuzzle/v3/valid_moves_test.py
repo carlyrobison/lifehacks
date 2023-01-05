@@ -1,6 +1,7 @@
 import unittest
 
 from game_state_model import GameState
+from game_state_model import Vial
 
 '''
 Setup, if you haven't played this game before.
@@ -32,7 +33,8 @@ class TestMoveValidity(unittest.TestCase):
         self.assertFalse(g.isValidMove((1, 0)))  # empty into full    
 
     def test_partialvials(self):
-        f = GameState('aba ba  abaab   ')
+        f = GameState('aaaa')
+        f.vials_ = [Vial('aba '), Vial('ba  '), Vial('abaa'), Vial('b   ')]  # override vials for the test
         self.assertTrue(f.isValidMove((0, 1)))
         self.assertTrue(f.isValidMove((1, 0)))
         self.assertFalse(f.isValidMove((1, 1)))
@@ -55,13 +57,14 @@ class TestMoveVials(unittest.TestCase):
         g = GameState('aaaa')
         g.makeMove((0, 1))
         self.assertEqual(g.vials_[0].__repr__(), '    ')
-        self.assertEqual(g.vials_[1].__repr__(), 'aaaa')    
+        self.assertEqual(g.vials_[1].__repr__(), 'aaaa')
 
     def test_partialvials(self):
-        g = GameState('baa baa ')
+        g = GameState('aaaa')
+        g.vials_ = [Vial('baa '), Vial('baa ')]  # override vials for the test
         g.makeMove((0, 1))
         self.assertEqual(g.vials_[0].__repr__(), 'ba  ')
-        self.assertEqual(g.vials_[1].__repr__(), 'baaa')    
+        self.assertEqual(g.vials_[1].__repr__(), 'baaa')
 
 if __name__ == '__main__':
     unittest.main()
