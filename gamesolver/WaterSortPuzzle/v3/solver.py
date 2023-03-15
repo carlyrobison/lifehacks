@@ -7,7 +7,7 @@ import timeit
 MAX_MOVES = 50
 DEBUG = False
 
-# TODO optimize with hashing
+# TODO: Search from both sides.
 def solve(game: GameState, explored_gamestates : List[GameState] = []) -> bool:
     # Base case 1: Solved!
     if game.isSolved():
