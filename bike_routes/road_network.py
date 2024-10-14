@@ -8,9 +8,9 @@ class Intersection:
         assert(len(NSstreet) == 1)
         self.charStreet: str = NSstreet
         self.elevation: int = elevation
-    
+
     def __repr__(self):
-        return str(self.numStreet) + " & " + self.charStreet
+        return f"{self.numStreet} & {self.charStreet}"
 
 # Intersection crossing type, in increasing goodness.
 class CrossType(Enum):
@@ -24,6 +24,9 @@ class Block:
         self.surface_rating = surface  # Sort of a star rating
         self.distance = distance
         self.crossType = crossing
+
+    def __repr__(self):
+        return f"{self.distance} & {self.crossType}"
 
 # Necessary setup of the arrays
 EWArray: list[dict[str, Block]] = [] # East west streets are numbered.
@@ -41,3 +44,7 @@ for c in list('cdefghi'):
         NSArray[c].append(Block(random.randrange(0, 5), random.randrange(50, 150), CrossType.ALL_WAY_STOP))
         Intersections[i][c] = Intersection(i, c, random.randrange(1000, 1500))
         print(c, i)
+
+print(NSArray)
+print(EWArray)
+print(Intersections)
