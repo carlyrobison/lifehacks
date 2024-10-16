@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Grand Canyon Planner</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/styles.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+<script src="js/main.js"></script>
+<style>
+</style>
+</head>
+<body>
+<div class="header text-white text-center">
+    <h1>Grand Canyon Planner</h1>
+    <p>Use this website to plan a Grand Canyon trip.</p>
+</div>
+
+<!-- Later Problem: Start scrolled down (at RM 0)-->
+<div class="container-fluid">
+    <div class="row" id="rivermap">
+      <div class="bank left-bank col-sm">
+        <!-- Consider using popovers instead of badges.-->
+        <h3><span class="badge bg-secondary">POI</span> Canyon --></h3>
+      </div>
+      <div class="river col-sm-2">
+        River
+      </div>
+      <div class="bank right-bank col-sm">
+        <h5><-- Campsite <span class="badge bg-primary">Camp</span></h5>
+      </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="AddCampModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Something goes here.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Later Problem: Make the header and footer floating-->
+<div class="footer">
+    <h2>Footer</h2>
+    
+    <button type="button" id="add-campsite" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddCampModal">Add Campsite</button>
+</div>
+</body>
+</html>

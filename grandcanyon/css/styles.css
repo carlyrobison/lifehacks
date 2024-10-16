@@ -1,0 +1,55 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .header {
+padding: 20px; /* some padding */
+text-align: center; /* center the text */
+background: #480404; /* muted red */
+color: rgb(221, 223, 227); /* white text color */
+}
+/* Increase the font size of the <h1> element */
+  .header h1 {
+font-size: 40px;
+}
+/* Ensure proper sizing */
+* {
+box-sizing: border-box;
+}
+
+/* Column container */
+.row {
+display: flex;
+flex-wrap: wrap;
+}
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+.row {
+  flex-direction: column;
+}
+}
+
+.footer {
+    padding: 10px; /* Some padding */
+    text-align: center; /* Center text*/
+    background: #8e8d8d; /* Grey background */
+  }
+
+  .river {
+    text-align: center; /* Center text*/
+    background: #115354; /* Green background */
+    color:  #a1bff0;
+  }
+
+.bank {
+    background: rgb(189, 137, 68);
+    color: rgb(6, 3, 24);
+}
+
+  .left-bank {
+    text-align: right;
+  }
+
+  .right-bank {
+    text-align: left;
+  }
