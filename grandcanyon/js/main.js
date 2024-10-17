@@ -8,20 +8,20 @@ function screenPos(riverMile) {
     return headerSize + padding + riverScreenLength - (riverMile * pxPerMile)
 }
 
+// TODO: add a bunch of items here.
+function writeCampsites(){
+
+}
+
 $(document).ready(function(){
     // jQuery methods go here...
     headerSize = $(".header").height()
 
     $("#rivermap").height(padding + (riverMiles * pxPerMile) + padding)
 
-    // TODO: add a bunch of thingies
     // <!-- Consider using popovers instead of badges.-->
-    // <h3><span class="badge bg-secondary">POI</span> Canyon --></h3>
-    // Why is it not showing badges?
-
     $(".left-bank").append(
-        $("<h5></h5>").append($("<span></span>").text("POI").addClass("badge").addClass("bg-secondary"))
-        .text("Canyon")
+        $("<h5></h5>").html('<span class="badge bg-secondary">POI</span> Canyon -->')
         .css("transform", `translateY(${screenPos(100)}px)`))
   
-  });
+});
