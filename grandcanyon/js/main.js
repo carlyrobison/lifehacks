@@ -1,7 +1,7 @@
 const riverMiles = 300;
 const pxPerMile = 100;
 const padding = 20;  // pixels
-var headerSize = 0;  // pixels
+var headerSize = 96;  // pixels
 
 function screenPos(riverMile) {
     riverScreenLength = riverMiles * pxPerMile;
