@@ -1,11 +1,11 @@
 const riverMiles = 300;
 const pxPerMile = 100;
-const padding = 20;  // pixels
+const padding = 100;  // pixels
 var headerSize = 96;  // pixels
 
 function screenPos(riverMile) {
     riverScreenLength = riverMiles * pxPerMile;
-    return headerSize + padding + riverScreenLength - (riverMile * pxPerMile)
+    return padding + riverScreenLength - (riverMile * pxPerMile)
 }
 
 function writeCampsites(){
