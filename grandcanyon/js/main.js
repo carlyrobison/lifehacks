@@ -29,7 +29,43 @@ function writeCampsites(){
     });
 }
 
+function writePOIs(){
+    $.get("data/Grand Canyon POIs - POIs.csv", function(csvdata) {
+        var data = $.csv.toObjects(csvdata);
+        for (const poi of data) {
+            if (poi['Side'] == 'L') {
+                $(".left-bank").append(
+                    $("<p></p>").html('<span class="badge bg-secondary">POI</span> ' + poi['Name'] + ' -->')
+                    .css("transform", `translateY(${screenPos(parseFloat(poi['River Mile']))}px)`))
+            } else if (poi['Side'] == 'R') {
+                $(".right-bank").append(
+                    $("<p></p>").html('<-- ' + poi['Name'] + ' <span class="badge bg-secondary">POI</span>')
+                    .css("transform", `translateY(${screenPos(parseFloat(poi['River Mile']))}px)`))
+            } else {
+                console.log('Improper side for POI:' + poi)
+            }
+        }
+    });
+}
 
+function writeRapids(){
+    $.get("data/Grand Canyon POIs - Rapids.csv", function(csvdata) {
+        var data = $.csv.toObjects(csvdata);
+        for (const rapid of data) {
+            console.log(rapid)
+            if (parseInt(rapid['Rating']) > 5) {  // Bad rapids are warnings
+                $(".river").append(
+                    $("<p></p>").html(rapid['Name'] + ' <span class="badge bg-danger">' + rapid['Rating'] + '</span> ')
+                    .css("transform", `translateY(${screenPos(parseFloat(rapid['River Mile']))}px)`))
+            } else { // Easier rapid
+                $(".river").append(
+                    $("<p></p>").html(rapid['Name'] + ' <span class="badge bg-warning text-dark">' + rapid['Rating'] + '</span> ')
+                    .css("transform", `translateY(${screenPos(parseFloat(rapid['River Mile']))}px)`))
+            }
+            
+        }
+    });
+}
 
 $(document).ready(function(){
     // jQuery methods go here...
@@ -37,11 +73,8 @@ $(document).ready(function(){
 
     $("#rivermap").height(padding + (riverMiles * pxPerMile) + padding)
 
-    // <!-- Consider using popovers instead of badges.-->
-    $(".left-bank").append(
-        $("<h5></h5>").html('<span class="badge bg-secondary">POI</span> Canyon -->')
-        .css("transform", `translateY(${screenPos(100)}px)`))
-
+    writePOIs();
     writeCampsites();
+    writeRapids();
   
 });
