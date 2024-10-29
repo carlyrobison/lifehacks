@@ -33,16 +33,14 @@ function writePOIs(){
     $.get("data/Grand Canyon POIs - POIs.csv", function(csvdata) {
         var data = $.csv.toObjects(csvdata);
         for (const poi of data) {
-            if (poi['Side'] == 'L') {
+            if ((poi['Side'] == 'L') || (poi['Side'] == 'Both')) {
                 $(".left-bank").append(
                     $("<p></p>").html('<span class="badge bg-secondary">POI</span> ' + poi['Name'] + ' -->')
                     .css("transform", `translateY(${screenPos(parseFloat(poi['River Mile']))}px)`))
-            } else if (poi['Side'] == 'R') {
+            } if ((poi['Side'] == 'R') || (poi['Side'] == 'Both')) {
                 $(".right-bank").append(
                     $("<p></p>").html('<-- ' + poi['Name'] + ' <span class="badge bg-secondary">POI</span>')
                     .css("transform", `translateY(${screenPos(parseFloat(poi['River Mile']))}px)`))
-            } else {
-                console.log('Improper side for POI:' + poi)
             }
         }
     });
