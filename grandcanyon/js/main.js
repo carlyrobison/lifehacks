@@ -8,20 +8,34 @@ function screenPos(riverMile) {
     return padding + riverScreenLength - (riverMile * pxPerMile)
 }
 
+function setupCanvas() {
+    $("#rivermap").height(padding + (riverMiles * pxPerMile) + padding)
+    var left_bank = $("#left-bank-canvas").getContext("2d")
+    left_bank.textAlign = "right"
+    left_bank.textBaseline = "middle"
+
+    var right_bank = $("#right-bank-canvas").getContext("2d")
+    right_bank.textAlign = "left"
+    left_bank.textBaseline = "middle"
+
+    var river = $("#river-canvas").getContext("2d")
+    river.textAlign = "center"
+    river.textBaseline = "middle"
+}
+
 function writeCampsites(){
     $.get("data/Grand Canyon POIs - Camps.csv", function(csvdata) {
         // csv is populated with the file contents
         var data = $.csv.toObjects(csvdata);
+        var left_bank = $("#left-bank-canvas").getContext("2d")
+        var right_bank = $("#right-bank-canvas").getContext("2d")
         for (const camp of data) {
             // Consider using popovers instead of badges.
+            var location = screenPos(parseFloat(camp['River Mile']))
             if (camp['Side'] == 'L') {
-                $(".left-bank").append(
-                    $("<p></p>").html('<span class="badge bg-primary">Camp</span> ' + camp['Name'] + ' -->')
-                    .css("transform", `translateY(${screenPos(parseFloat(camp['River Mile']))}px)`))
+                left_bank.fillText("[Camp] " + camp["Name"] + " -->", 100, 100)
             } else if (camp['Side'] == 'R') {
-                $(".right-bank").append(
-                    $("<p></p>").html('<-- ' + camp['Name'] + ' <span class="badge bg-primary">Camp</span>')
-                    .css("transform", `translateY(${screenPos(parseFloat(camp['River Mile']))}px)`))
+                right_bank.fillText("<-- " + camp["Name"] + " [Camp]", 0, location)
             } else {
                 console.log('Improper side for camp:' + camp)
             }
@@ -34,11 +48,11 @@ function writePOIs(){
         var data = $.csv.toObjects(csvdata);
         for (const poi of data) {
             if ((poi['Side'] == 'L') || (poi['Side'] == 'Both')) {
-                $(".left-bank").append(
+                $("#left-bank-canvas").append(
                     $("<p></p>").html('<span class="badge bg-secondary">POI</span> ' + poi['Name'] + ' -->')
                     .css("transform", `translateY(${screenPos(parseFloat(poi['River Mile']))}px)`))
             } if ((poi['Side'] == 'R') || (poi['Side'] == 'Both')) {
-                $(".right-bank").append(
+                $("#right-bank-canvas").append(
                     $("<p></p>").html('<-- ' + poi['Name'] + ' <span class="badge bg-secondary">POI</span>')
                     .css("transform", `translateY(${screenPos(parseFloat(poi['River Mile']))}px)`))
             }
@@ -69,7 +83,8 @@ $(document).ready(function(){
     // jQuery methods go here...
     headerSize = $(".header").height()
 
-    $("#rivermap").height(padding + (riverMiles * pxPerMile) + padding)
+    setupCanvas();
+
 
     writePOIs();
     writeCampsites();
