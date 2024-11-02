@@ -10,30 +10,33 @@ function screenPos(riverMile) {
 
 function setupCanvas() {
     $("#rivermap").height(padding + (riverMiles * pxPerMile) + padding)
-    var left_bank = $("#left-bank-canvas").getContext("2d")
+    var left_bank = $("#left-bank-canvas").get(0).getContext("2d")
     left_bank.textAlign = "right"
     left_bank.textBaseline = "middle"
+    left_bank.font = '14pt Arial'
 
-    var right_bank = $("#right-bank-canvas").getContext("2d")
+    var right_bank = $("#right-bank-canvas").get(0).getContext("2d")
     right_bank.textAlign = "left"
-    left_bank.textBaseline = "middle"
+    right_bank.textBaseline = "middle"
+    right_bank.font = '14pt Arial'
 
-    var river = $("#river-canvas").getContext("2d")
+    var river = $("#river-canvas").get(0).getContext("2d")
     river.textAlign = "center"
     river.textBaseline = "middle"
+    river.font = '14pt Arial'
 }
 
 function writeCampsites(){
     $.get("data/Grand Canyon POIs - Camps.csv", function(csvdata) {
         // csv is populated with the file contents
         var data = $.csv.toObjects(csvdata);
-        var left_bank = $("#left-bank-canvas").getContext("2d")
-        var right_bank = $("#right-bank-canvas").getContext("2d")
+        var left_bank = $("#left-bank-canvas").get(0).getContext("2d")
+        var right_bank = $("#right-bank-canvas").get(0).getContext("2d")
         for (const camp of data) {
             // Consider using popovers instead of badges.
             var location = screenPos(parseFloat(camp['River Mile']))
             if (camp['Side'] == 'L') {
-                left_bank.fillText("[Camp] " + camp["Name"] + " -->", 100, 100)
+                left_bank.fillText("[Camp] " + camp["Name"] + " -->", 500, location)
             } else if (camp['Side'] == 'R') {
                 right_bank.fillText("<-- " + camp["Name"] + " [Camp]", 0, location)
             } else {
@@ -46,15 +49,14 @@ function writeCampsites(){
 function writePOIs(){
     $.get("data/Grand Canyon POIs - POIs.csv", function(csvdata) {
         var data = $.csv.toObjects(csvdata);
+        var left_bank = $("#left-bank-canvas").get(0).getContext("2d")
+        var right_bank = $("#right-bank-canvas").get(0).getContext("2d")
         for (const poi of data) {
+            var location = screenPos(parseFloat(poi['River Mile']))
             if ((poi['Side'] == 'L') || (poi['Side'] == 'Both')) {
-                $("#left-bank-canvas").append(
-                    $("<p></p>").html('<span class="badge bg-secondary">POI</span> ' + poi['Name'] + ' -->')
-                    .css("transform", `translateY(${screenPos(parseFloat(poi['River Mile']))}px)`))
+                left_bank.fillText("[POI] " + poi["Name"] + " -->", 500, location)
             } if ((poi['Side'] == 'R') || (poi['Side'] == 'Both')) {
-                $("#right-bank-canvas").append(
-                    $("<p></p>").html('<-- ' + poi['Name'] + ' <span class="badge bg-secondary">POI</span>')
-                    .css("transform", `translateY(${screenPos(parseFloat(poi['River Mile']))}px)`))
+                right_bank.fillText("<-- " + poi["Name"] + " [POI]", 0, location)
             }
         }
     });
@@ -63,16 +65,13 @@ function writePOIs(){
 function writeRapids(){
     $.get("data/Grand Canyon POIs - Rapids.csv", function(csvdata) {
         var data = $.csv.toObjects(csvdata);
+        var river = $("#river-canvas").get(0).getContext("2d")
         for (const rapid of data) {
-            console.log(rapid)
+            var location = screenPos(parseFloat(rapid['River Mile']))
             if (parseInt(rapid['Rating']) > 5) {  // Bad rapids are warnings
-                $(".river").append(
-                    $("<p></p>").html(rapid['Name'] + ' <span class="badge bg-danger">' + rapid['Rating'] + '</span> ')
-                    .css("transform", `translateY(${screenPos(parseFloat(rapid['River Mile']))}px)`))
+                river.fillText(rapid['Name'] + "(" + rapid['Rating'] + ")", 150, location)
             } else { // Easier rapid
-                $(".river").append(
-                    $("<p></p>").html(rapid['Name'] + ' <span class="badge bg-warning text-dark">' + rapid['Rating'] + '</span> ')
-                    .css("transform", `translateY(${screenPos(parseFloat(rapid['River Mile']))}px)`))
+                river.fillText(rapid['Name'] + "(" + rapid['Rating'] + ")", 150, location)
             }
             
         }
