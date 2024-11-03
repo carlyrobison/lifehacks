@@ -14,6 +14,7 @@ function setupCanvas() {
     left_bank.textAlign = "right"
     left_bank.textBaseline = "middle"
     left_bank.font = '14pt Arial'
+    left_bank.color = rgb(6, 3, 24)
 
     var right_bank = $("#right-bank-canvas").get(0).getContext("2d")
     right_bank.textAlign = "left"
@@ -24,6 +25,7 @@ function setupCanvas() {
     river.textAlign = "center"
     river.textBaseline = "middle"
     river.font = '14pt Arial'
+    river.textColor = "#a1bff0"
 }
 
 function writeCampsites(){

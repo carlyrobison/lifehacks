@@ -11,6 +11,24 @@ class Intersection:
 
     def __repr__(self):
         return f"{self.numStreet} & {self.charStreet}"
+    
+    def __eq__(self, other):
+        return self.charStreet == other.charStreet and self.numStreet == other.numStreet
+
+    def getNextNSStreet(self):
+        # TODO(carly): Update to python3.10 so this works
+        # match self.charStreet:
+        #     case 'a':
+        #         return 'b'
+        if self.charStreet == 'a': return 'b'
+        if self.charStreet == 'b': return 'c'
+        if self.charStreet == 'c': return 'd'
+        if self.charStreet == 'd': return 'e'
+        if self.charStreet == 'e': return 'f'
+        if self.charStreet == 'f': return 'g'
+        if self.charStreet == 'g': return 'h'
+        if self.charStreet == 'h': return 'i'
+            
 
 # Intersection crossing type, in increasing goodness.
 class CrossType(Enum):
@@ -23,7 +41,7 @@ class Block:
     def __init__(self, surface: int, distance: int, crossing: CrossType):
         self.surface_rating = surface  # Sort of a star rating
         self.distance = distance
-        self.crossType = crossing
+        self.crossType = crossing  # Crossing out of the block
 
     def __repr__(self):
         return f"{self.distance} & {self.crossType}"
