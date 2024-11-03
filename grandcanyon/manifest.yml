@@ -28,7 +28,7 @@ spec:
         - --root=/http
         env:
             - name: GIT_SYNC_PERIOD
-              value: "600"
+              value: "10m"
       - name: python-http-server
         image: python:3
         command: ["python3", "-m", "http.server", "-d", "/usr/share/lifehacks/lifehacks.git/grandcanyon"]

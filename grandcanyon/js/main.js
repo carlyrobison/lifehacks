@@ -69,9 +69,9 @@ function writeRapids(){
         for (const rapid of data) {
             var location = screenPos(parseFloat(rapid['River Mile']))
             if (parseInt(rapid['Rating']) > 5) {  // Bad rapids are warnings
-                river.fillText(rapid['Name'] + "(" + rapid['Rating'] + ")", 150, location)
+                river.fillText(rapid['Name'] + " (" + rapid['Rating'] + ")", 150, location)
             } else { // Easier rapid
-                river.fillText(rapid['Name'] + "(" + rapid['Rating'] + ")", 150, location)
+                river.fillText(rapid['Name'] + " (" + rapid['Rating'] + ")", 150, location)
             }
             
         }
