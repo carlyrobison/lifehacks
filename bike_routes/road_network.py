@@ -14,6 +14,17 @@ class Intersection:
     
     def __eq__(self, other):
         return self.charStreet == other.charStreet and self.numStreet == other.numStreet
+    
+    def __hash__(self):
+        if self.charStreet == 'a': return 100 + self.numStreet
+        if self.charStreet == 'b': return 200 + self.numStreet
+        if self.charStreet == 'c': return 300 + self.numStreet
+        if self.charStreet == 'd': return 400 + self.numStreet
+        if self.charStreet == 'e': return 500 + self.numStreet
+        if self.charStreet == 'f': return 600 + self.numStreet
+        if self.charStreet == 'g': return 700 + self.numStreet
+        if self.charStreet == 'h': return 800 + self.numStreet
+        if self.charStreet == 'i': return 900 + self.numStreet
 
     def getNextNSStreet(self):
         # TODO(carly): Update to python3.10 so this works
@@ -61,8 +72,8 @@ for c in list('cdefghi'):
         EWArray[i][c] = Block(random.randrange(0, 5), random.randrange(50, 150), CrossType.ALL_WAY_STOP)
         NSArray[c].append(Block(random.randrange(0, 5), random.randrange(50, 150), CrossType.ALL_WAY_STOP))
         Intersections[i][c] = Intersection(i, c, random.randrange(1000, 1500))
-        print(c, i)
+        # print(c, i)
 
-print(NSArray)
-print(EWArray)
-print(Intersections)
+# print(NSArray)
+# print(EWArray)
+# print(Intersections)
