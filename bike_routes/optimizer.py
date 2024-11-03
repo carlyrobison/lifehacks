@@ -3,15 +3,16 @@ from road_network import *
 class Path:
     def __init__(self, intersection: Intersection):
         self.latest_ixn: Intersection = intersection
-        self.paths: list = []
+        self.ixns: list = []
 
     def __repr__(self):
-        return " -> ".join([str(self.latest_ixn)] + [str(p) for p in self.paths])
+        return " -> ".join([str(p) for p in self.ixns] + [str(self.latest_ixn)])
     
     def extend(self, intersection):
         new_path = Path(intersection)
-        new_path.paths = self.paths + [self.latest_ixn]
-        return Path(intersection)
+        new_path.ixns += self.ixns
+        new_path.ixns.append(self.latest_ixn)
+        return new_path
 
 startIntersection = Intersection(17, 'd', 0)
 destination = Intersection(25, 'i', 0)
