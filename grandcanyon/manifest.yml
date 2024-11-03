@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grandcanyon-website
+spec:
+  selector:
+    matchLabels:
+      app: grandcanyon-website
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grandcanyon-website
+    spec:
+      containers:
+      - name: git-sync
+        image: k8s.gcr.io/git-sync:v3.1.3
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: http-server
+          mountPath: /http
+        args:
+        - --repo=https://github.com/carlyrobison/lifehacks.git
+        - --branch=main
+        - --root=/http
+        env:
+            - name: GIT_SYNC_PERIOD
+              value: "600"
+      - name: python-http-server
+        image: python:3
+        command: ["python3", "-m", "http.server", "-d", "/usr/share/lifehacks/lifehacks.git/grandcanyon"]
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: http-server
+          mountPath: /usr/share/lifehacks
+        ports:
+        - containerPort: 8000
+          name: http-web-svc
+      volumes:
+      - name: http-server
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grandcanyon-website
+spec:
+  selector:
+    app: grandcanyon-website
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http-web-svc
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  name: grandcanyon-website
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - grandcanyon.wattsonwater.com
+      secretName: fluxview-ingress-tls
+  rules:
+    - host: grandcanyon.wattsonwater.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grandcanyon-website
+                port:
+                  number: 80
